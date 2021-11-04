@@ -16,6 +16,20 @@ pin_btn4 = 13
 pin_btn5 = 19
 pin_btn6 = 26
 
+pin_led_red = 24
+pin_led_green = 23
+pin_led_yellow = 18
+
+pin_sound_1 = 7
+pin_sound_2 = 8
+pin_sound_3 = 25
+
+pin_driver_1 = 21
+pin_driver_2 = 20
+pin_driver_3 = 16
+
+pin_relay = 12
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(pin_btn1, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(pin_btn2, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -23,6 +37,20 @@ GPIO.setup(pin_btn3, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(pin_btn4, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(pin_btn5, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(pin_btn6, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+GPIO.setup(pin_led_red, GPIO.OUT)
+GPIO.setup(pin_led_green, GPIO.OUT)
+GPIO.setup(pin_led_yellow, GPIO.OUT)
+
+GPIO.setup(pin_sound_1, GPIO.OUT)
+GPIO.setup(pin_sound_2, GPIO.OUT)
+GPIO.setup(pin_sound_3, GPIO.OUT)
+
+GPIO.setup(pin_driver_1, GPIO.OUT)
+GPIO.setup(pin_driver_2, GPIO.OUT)
+GPIO.setup(pin_driver_3, GPIO.OUT)
+
+GPIO.setup(pin_relay, GPIO.OUT)
 
 btn1 = GPIO.input(pin_btn1)
 btn2 = GPIO.input(pin_btn2)
@@ -59,28 +87,53 @@ def do_loop():
     print("server is ready.")
     while True:
         # print("waiting")
+        GPIO.output(pin_sound_1, GPIO.HIGH)
+        GPIO.output(pin_sound_2, GPIO.HIGH)
+        GPIO.output(pin_sound_3, GPIO.HIGH)
         if GPIO.input(pin_btn1) == 0:
-            # print("triggered")
+            GPIO.output(pin_led_red, GPIO.HIGH)
+            GPIO.output(pin_driver_3, GPIO.HIGH)
             while GPIO.input(pin_btn1) != 1:
                 sleep(0.01)
+            GPIO.output(pin_led_red, GPIO.LOW)
+            GPIO.output(pin_driver_3, GPIO.LOW)
             add_counter(int(1))
         if GPIO.input(pin_btn2) == 0:
+            GPIO.output(pin_led_green, GPIO.HIGH)
+            GPIO.output(pin_driver_2, GPIO.HIGH)
             while GPIO.input(pin_btn2) != 1:
                 sleep(0.01)
+            GPIO.output(pin_led_green, GPIO.LOW)
+            GPIO.output(pin_driver_2, GPIO.LOW)
             add_counter(int(2))
         if GPIO.input(pin_btn3) == 0:
+            GPIO.output(pin_led_yellow, GPIO.HIGH)
+            GPIO.output(pin_relay, GPIO.HIGH)
+            GPIO.output(pin_driver_1, GPIO.HIGH)
             while GPIO.input(pin_btn3) != 1:
                 sleep(0.01)
+            GPIO.output(pin_led_yellow, GPIO.LOW)
+            GPIO.output(pin_relay, GPIO.LOW)
+            GPIO.output(pin_driver_1, GPIO.LOW)
             add_counter(int(3))
         if GPIO.input(pin_btn4) == 0:
+            GPIO.output(pin_sound_1, GPIO.HIGH)
+            GPIO.output(pin_sound_2, GPIO.LOW)
+            GPIO.output(pin_sound_3, GPIO.LOW)
             while GPIO.input(pin_btn4) != 1:
                 sleep(0.01)
             add_counter(int(4))
         if GPIO.input(pin_btn5) == 0:
+            GPIO.output(pin_sound_1, GPIO.LOW)
+            GPIO.output(pin_sound_2, GPIO.HIGH)
+            GPIO.output(pin_sound_3, GPIO.LOW)
             while GPIO.input(pin_btn5) != 1:
                 sleep(0.01)
             add_counter(int(5))
         if GPIO.input(pin_btn6) == 0:
+            GPIO.output(pin_sound_1, GPIO.LOW)
+            GPIO.output(pin_sound_2, GPIO.LOW)
+            GPIO.output(pin_sound_3, GPIO.HIGH)
             while GPIO.input(pin_btn6) != 1:
                 sleep(0.01)
             add_counter(int(6))
